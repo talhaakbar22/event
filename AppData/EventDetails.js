@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, View, SafeAreaView, TouchableOpacity, Image, RefreshControl, useWindowDimensions, ScrollView, ToastAndroid } from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity, Image, RefreshControl, useWindowDimensions, ScrollView, ToastAndroid,Platform } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Background from "../Assets/Background";
 import SmallTextGrid from "./SmallTextGrid";
 import { AuthContext } from "../config/AuthProvider";
 import { Event_visitor_api, Event_visitor_response_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
+import Toast from "react-native-simple-toast";
+
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -38,8 +40,13 @@ const eventdetail = ({ navigation, route }) => {
           setLoading(false)
         }
       } else {
-        ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
-        setLoading(false);
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          setLoading(false);
+        } else {
+          Toast.show("There is something wrong!", Toast.LONG);
+          setLoading(false);
+        }
       }
 
     }
@@ -56,12 +63,22 @@ const eventdetail = ({ navigation, route }) => {
           if (response.data.message == false) {
             let response = await Event_visitor_response_api({ user_id: user.id, event_id: item.id, visiting_status: "pending", })
             if (response.data.message == true) {
-              ToastAndroid.show("Request Sent!", ToastAndroid.LONG);
-              setLoading(false)
+              if (Platform.OS === 'android') {
+                ToastAndroid.showWithGravityAndOffset("Request Sent!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+                setLoading(false);
+              } else {
+                Toast.show("Request Sent!", Toast.LONG);
+                setLoading(false);
+              }
               setEvent(response.data.data.event_status);
             } else {
-              ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
-              setLoading(false)
+              if (Platform.OS === 'android') {
+                ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+                setLoading(false);
+              } else {
+                Toast.show("There is something wrong!", Toast.LONG);
+                setLoading(false);
+              }
             }
           } else {
             if (response.data.data.event_status == "accepted") {
@@ -74,13 +91,23 @@ const eventdetail = ({ navigation, route }) => {
             }
             else {
               setEvent("");
-              ToastAndroid.show(response.data.data.event_status, ToastAndroid.LONG);
-              setLoading(false)
+              if (Platform.OS === 'android') {
+                ToastAndroid.showWithGravityAndOffset(response.data.data.event_status, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+                setLoading(false);
+              } else {
+                Toast.show(response.data.data.event_status, Toast.LONG);
+                setLoading(false);
+              }
             }
           }
         } else {
-          ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
-          setLoading(false);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+            setLoading(false);
+          } else {
+            Toast.show("There is something wrong!", Toast.LONG);
+            setLoading(false);
+          }
         }
       }
     }

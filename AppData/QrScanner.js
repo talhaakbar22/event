@@ -1,12 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
 import QRCodeScanner from "react-native-qrcode-scanner";
-import { View, SafeAreaView, Text, Linking, Alert, ToastAndroid, Image, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Text,
+  Linking,
+  Alert,
+  ToastAndroid,
+  Image,
+  ScrollView,
+  Dimensions,
+  Platform,
+} from "react-native";
 import { RNCamera } from "react-native-camera";
 import Background from "../Assets/Background";
 import LinearGradient from "react-native-linear-gradient";
 import { AuthContext } from "../config/AuthProvider";
 import { Attendance_api, Events_details } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
+import Toast from "react-native-simple-toast";
 
 const height = Dimensions.get('screen').height
 const width = Dimensions.get('screen').width
@@ -49,20 +61,35 @@ const QRScanner = ({ }) => {
         setUserid(res.data);
         setEventid(res.data);
         if (res.data.success == true) {
-          ToastAndroid.show(res.data.message, ToastAndroid.LONG);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset(res.data.message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+            setLoading(false);
+          } else {
+            Toast.show(res.data.message, Toast.LONG);
+            setLoading(false);
+          }
         } else {
           console.log("gdjahd");
         }
       } else {
-        ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
-        setLoading(false)
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          setLoading(false);
+        } else {
+          Toast.show("There is something wrong!", Toast.LONG);
+          setLoading(false);
+        }
       }
-
     }
     else {
-      ToastAndroid.show("Failed due to scanner issue.", ToastAndroid.LONG);
+      if (Platform.OS === 'android') {
+        ToastAndroid.showWithGravityAndOffset("Failed due to scanner issue.", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+        setLoading(false);
+      } else {
+        Toast.show("Failed due to scanner issue.", Toast.LONG);
+        setLoading(false);
+      }
     }
-
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>

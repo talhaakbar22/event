@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Text, View, SafeAreaView, TouchableOpacity, ToastAndroid } from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity, ToastAndroid, Platform } from "react-native";
 import Background from "../Assets/Background";
 import OtpInputs from "react-native-otp-inputs";
 import { AuthContext } from "../config/AuthProvider";
 import { OTP_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
+import Toast from "react-native-simple-toast";
 
 const Otp = ({ route, navigation }) => {
   const { user } = useContext(AuthContext);
@@ -25,16 +26,31 @@ const Otp = ({ route, navigation }) => {
     let res = await OTP_api(OtpData)
     if (res !== "Error") {
       if (res.data.success == false) {
-        ToastAndroid.show("Enter correct OTP Code", ToastAndroid.LONG);
-        setLoading(false);
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("Enter correct OTP Code", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          setLoading(false);
+        } else {
+          Toast.show("Enter correct OTP Code", Toast.LONG);
+          setLoading(false);
+        }
       } else {
-        ToastAndroid.show("Code verified", ToastAndroid.LONG);
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("Code verified", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          setLoading(false);
+        } else {
+          Toast.show("Code verified", Toast.LONG);
+          setLoading(false);
+        }
         navigation.navigate("Login")
-        setLoading(false);
       }
     } else {
-      ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
-      setLoading(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+        setLoading(false);
+      } else {
+        Toast.show("There is something wrong!", Toast.LONG);
+        setLoading(false);
+      }
     }
   };
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { SafeAreaView, Text, View, Image, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
+import { SafeAreaView, Text, View, Image, TouchableOpacity, ScrollView, ToastAndroid, Platform } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import Background from "../Assets/Background";
 import * as CON from "../component/Constants";
@@ -10,6 +10,7 @@ import { Date_picker } from "../utilis/Text_input";
 import { Signup_validation } from "../utilis/validation";
 import { Signup_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
+import Toast from "react-native-simple-toast";
 var validator = require("email-validator");
 
 const Register = ({ navigation, item }) => {
@@ -56,7 +57,11 @@ const Register = ({ navigation, item }) => {
       if (res !== "Error") {
         if (jsonData.success === true) {
           var response = jsonData.data.user
-          ToastAndroid.show(jsonData.message, ToastAndroid.LONG);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset(jsonData.message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          } else {
+            Toast.show(jsonData.message, Toast.LONG);
+          }
           navigation.navigate("Otp", {
             id: response.id,
             email: userEmail,
@@ -64,25 +69,39 @@ const Register = ({ navigation, item }) => {
           setLoading(false);
           if (response.status == "pending") {
             setLoading(false);
-            ToastAndroid.show("Status is Pending", ToastAndroid.LONG);
+            if (Platform.OS === 'android') {
+              ToastAndroid.showWithGravityAndOffset("Status is Pending", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+            } else {
+              Toast.show("Status is Pending", Toast.LONG);
+            }
           } else {
             setLoading(false);
-            ToastAndroid.show("Email is already taken", ToastAndroid.LONG);
+            if (Platform.OS === 'android') {
+              ToastAndroid.showWithGravityAndOffset("Email is already taken", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+            } else {
+              Toast.show("Email is already taken", Toast.LONG);
+            }
           }
-        } 
+        }
         else{
-          ToastAndroid.show("The Email has already been taken!", ToastAndroid.LONG);
+          setLoading(false);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset("The Email has already taken", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          } else {
+            Toast.show("The Email has already taken", Toast.LONG);
+          }
+        }
+      } else {
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("Registration unsuccessful!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          setLoading(false);
+        } else {
+          Toast.show("Registration unsuccessful!", Toast.LONG);
           setLoading(false);
         }
-
-      } else {
-        ToastAndroid.show("Registration unsuccessful!", ToastAndroid.LONG);
-        setLoading(false);
       }
     }
   };
-
-
   const calculate_age = (dates) => {
     var today = new Date();
     var birthDate = dates.split("T")[0].split("-");
@@ -133,7 +152,7 @@ const Register = ({ navigation, item }) => {
                 placeholder={"User Name"}
                 value={userName}
                 placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
                 onChangeText={(userName) => { setErrors(""), setUserName(userName) }}
                 error={errors === "Please enter your name" ? "Please enter your name" : null || errors === "Name must should contain 3 letters" ? "Name must should contain 3 letters" : null}
               />
@@ -143,7 +162,7 @@ const Register = ({ navigation, item }) => {
                 value={userEmail}
                 placeholderTextColor="white"
                 autoCapitalize="none"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
                 onChangeText={(userEmail) => { setErrors(""), setUserEmail(userEmail) }}
                 error={errors === "Please Enter Your Email" ? "Please Enter Your Email" : null || errors === "Email format is invalid" ? "Email format is invalid" : null}
               />
@@ -153,7 +172,7 @@ const Register = ({ navigation, item }) => {
                 value={userPassword}
                 placeholderTextColor="white"
                 secureTextEntry={true}
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
                 onChangeText={(userPassword) => { setErrors(""), setUserPassword(userPassword) }}
                 error={errors === "Please Enter Your Password" ? "Please Enter Your Password" : null || errors === "Password must should contain 6 digits" ? "Password must should contain 6 digits" : null}
               />
@@ -163,7 +182,7 @@ const Register = ({ navigation, item }) => {
                 value={userConfirmPassword}
                 placeholderTextColor="white"
                 secureTextEntry={true}
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
                 onChangeText={(userConfirmPassword) => { setErrors(""), setuserConfirmPassword(userConfirmPassword) }}
                 error={errors === "Please enter your confirm password" ? "Please enter your confirm password" : null || errors === "Password doesn't match" ? "Password doesn't match" : null}
               />
@@ -173,7 +192,7 @@ const Register = ({ navigation, item }) => {
                 keyboardType="number-pad"
                 maxLength={20}
                 placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
                 onChangeText={(phone) => { setErrors(""), setPhone(phone) }}
                 error={errors === "Please Enter Your Phone Number" ? "Please Enter Your Phone Number" : null || errors === "Phone Number must should contain 11 digits" ? "Phone Number must should contain 11 digits" : null}
               />
@@ -187,7 +206,7 @@ const Register = ({ navigation, item }) => {
                 maxLength={25}
                 placeholderTextColor="white"
                 keyboardType="number-pad"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
                 onChangeText={(cnic) => { setErrors(""), setCnic(cnic) }}
                 error={errors === "Inavlid cnic number" ? "Inavlid cnic number" : null}
               />
@@ -196,7 +215,7 @@ const Register = ({ navigation, item }) => {
                 value={country}
                 maxLength={25}
                 placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
                 onChangeText={(country) => { setErrors(""), setCountry(country) }}
                 error={errors === "Please enter your country" ? "Please enter your country" : null}
               />
@@ -206,7 +225,7 @@ const Register = ({ navigation, item }) => {
                 value={nationality}
                 maxLength={25}
                 placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
                 onChangeText={(nationality) => { setErrors(""), setNationality(nationality) }}
                 error={errors === "Please enter your nationality" ? "Please enter your nationality" : null}
               />

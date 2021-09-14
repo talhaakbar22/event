@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Text, SafeAreaView, View, Image, ToastAndroid, TouchableOpacity, ScrollView } from "react-native";
+import { Text, SafeAreaView, View, Image, ToastAndroid, TouchableOpacity, ScrollView, Platform } from "react-native";
 import Background from "../Assets/Background";
 import moment from "moment";
 import LinearGradient from "react-native-linear-gradient";
@@ -9,6 +9,7 @@ import { updateValidation } from "../utilis/validation";
 import { Update_profile_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
 import { get_data, save_data } from "../utilis/AsyncStorage/Controller";
+import Toast from "react-native-simple-toast";
 
 const UpdateProfile = () => {
   const { user, login } = useContext(AuthContext);
@@ -54,10 +55,18 @@ const UpdateProfile = () => {
       let response = await Update_profile_api(body)
       if (response !== "Error") {
         if (response.data == true) {
-          ToastAndroid.show("Info updated successfully !", ToastAndroid.LONG);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset("Info updated successfully !", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          } else {
+            Toast.show("Info updated successfully !", Toast.LONG);
+          }
           setLoading(false);
         } else {
-          ToastAndroid.show("Updated successfully !", ToastAndroid.LONG);
+          if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset("Updated successfully !", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+          } else {
+            Toast.show("Updated successfully !", Toast.LONG);
+          }
           setCountry(country);
           setNationality(nationality);
           setDob(dob);
@@ -71,7 +80,11 @@ const UpdateProfile = () => {
           setLoading(false);
         }
       } else {
-        ToastAndroid.show("There is something wrong!", ToastAndroid.LONG);
+        if (Platform.OS === 'android') {
+          ToastAndroid.showWithGravityAndOffset("There is something wrong!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+        } else {
+          Toast.show("There is something wrong!", Toast.LONG);
+        }
         setLoading(false);
       }
     }
@@ -93,14 +106,14 @@ const UpdateProfile = () => {
               editable={false}
               value={name}
               placeholderTextColor="white"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:45 }}
             />
             <FormInput
               placeholder={"Email"}
               value={email}
               editable={false}
               placeholderTextColor="white"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:45}}
             />
 
             <FormInput
@@ -109,7 +122,7 @@ const UpdateProfile = () => {
               maxLength={11}
               placeholderTextColor="white"
               keyboardType="number-pad"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:45}}
               onChangeText={(phone) => { setErrors(""), setPhone(phone) }}
               error={errors === "Please Enter Your Phone Number" ? "Please Enter Your Phone Number" : null || errors === "Please Enter Your Valid Phone Number" ? "Please Enter Your Valid Phone Number" : null}
             />
@@ -125,7 +138,7 @@ const UpdateProfile = () => {
               editable={false}
               placeholderTextColor="white"
               keyboardType="number-pad"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:45}}
               // onChangeText={(cnic) => { setErrors(""), setCnic(cnic) }}
               error={errors === "Inavlid cnic number" ? "Inavlid cnic number" : null}
             />
@@ -134,7 +147,7 @@ const UpdateProfile = () => {
               value={country}
               maxLength={25}
               placeholderTextColor="white"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:45}}
               onChangeText={(country) => { setErrors(""), setCountry(country) }}
               error={errors === "Please enter your country" ? "Please enter your country" : null}
             />
@@ -144,7 +157,7 @@ const UpdateProfile = () => {
               value={nationality}
               maxLength={25}
               placeholderTextColor="white"
-              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", }}
+              style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:45}}
               onChangeText={(nationality) => { setErrors(""), setNationality(nationality) }}
               error={errors === "Please enter your nationality" ? "Please enter your nationality" : null}
             />

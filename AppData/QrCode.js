@@ -5,6 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { AuthContext } from "../config/AuthProvider";
 import { QRCode } from "react-native-custom-qr-codes";
 
+
 export const QrCode = ({ route }) => {
 
   let event = route.params.event;
