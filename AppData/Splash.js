@@ -20,7 +20,7 @@ const Splash = ({ navigation }) => {
       }
     }, 3000);
   }, []);
-  
+
   return (
     <SafeAreaView style = {{flex:1}}>
       <Background>

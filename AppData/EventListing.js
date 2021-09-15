@@ -23,7 +23,7 @@ const BottomTab = () => {
         name="View" component={ViewEvent}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style = {{alignItems: 'center'}}>
+            <View style = {{alignItems: 'center',marginTop:19}}>
               <Image
                 source={require("../Assets/View.png")}
                 resizeMode="contain"
@@ -45,7 +45,7 @@ const BottomTab = () => {
         name="Profile" component={ViewProfile}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style = {{alignItems: 'center'}}>
+            <View style = {{alignItems: 'center',marginTop:19}}>
               <Image
                 source={require("../Assets/Group98.png")}
                 resizeMode="contain"
