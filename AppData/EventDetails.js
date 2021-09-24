@@ -139,33 +139,37 @@ const eventdetail = ({ navigation, route }) => {
               </View>
             </LinearGradient>
           </View>
-          <ScrollView style={{ backgroundColor: "rgba(0,0,0,0.4)", borderWidth: 1, borderColor: "#5d5d5d", margin: 10, flex: 1, padding: 10, borderRadius: 5, }}
+          <ScrollView style={{flex:1, backgroundColor: "rgba(0,0,0,0.4)", borderWidth: 1, borderColor: "#5d5d5d", margin: 10, padding: 10, borderRadius: 5, }}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
+            <View style={{flex:1}}>
             <Image source={{ uri: item.image }} style={{ height: 200 }} />
             <View style={{ backgroundColor: "#191919" }}>
               <Text style={{ fontSize: 24, textAlign: 'center', color: "#FEFEFE", marginTop: 10 }}>{item.title}</Text>
               <SmallTextGrid icon="title" title={item.speaker_name} />
               <SmallTextGrid icon="theme" title={item.event_theme} />
               <SmallTextGrid icon="location" title={item.venue} />
+              <SmallTextGrid icon="time" title={item.start_time + "  To  " + item.end_time} />
               {user.role == "user" ?
                 event !== "" && event !== undefined ? <Text style={{ color: "#fff", backgroundColor: event == "accepted" ? "green" : "orange", textAlign: "center", padding: 5, margin: 10, borderRadius: 5, alignSelf: 'flex-end' }}>{event}</Text>
                   : null
                 : null}
             </View>
             <Text style={{ color: "#fff",  margin: 15, marginVertical: 20}}>{item.description}</Text>
+            </View>
           </ScrollView>
         </View>
-        {user.role !== "admin" ?
-          event !== "joined" ?
-            <TouchableOpacity style={{ top: 45, }} onPress={() => { event == "pending" ? ToastAndroid.show("Your request is Pending!", ToastAndroid.LONG) : userValidation() }}>
-              <Image style={{ height: 90, width: 90, alignSelf: "center", }} source={require("../Assets/Qr.png")} />
-            </TouchableOpacity>
+        <View style={{ backgroundColor: "#fff5", borderTopLeftRadius: 38, borderTopRightRadius: 38, flex: 0.15 }} >
+          {user.role !== "admin" ?
+            event !== "joined" ?
+              <TouchableOpacity style={{ bottom: 45,width:80,alignSelf:"center" }} onPress={() => { event == "pending" ? ToastAndroid.show("Your request is Pending!", ToastAndroid.LONG) : userValidation() }}>
+                <Image style={{ height: 90, width: 90, alignSelf: "center", }} source={require("../Assets/Qr.png")} />
+              </TouchableOpacity>
+              : null
             : null
-          : null
-        }
-        <View style={{ backgroundColor: "#fff5", borderTopLeftRadius: 38, borderTopRightRadius: 38, flex: 0.2 }} />
+          }
+        </View>
       </Background>
     </SafeAreaView>
   );

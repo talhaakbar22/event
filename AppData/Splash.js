@@ -7,8 +7,8 @@ import { get_data } from "../utilis/AsyncStorage/Controller";
 
 const Splash = ({ navigation }) => {
   var dimensions = Dimensions.get("screen");
-  var width = dimensions.width;
-  var height = Math.round((dimensions.width * 5) / 8);
+  var width = dimensions.width/1.7;
+  var height = Math.round((dimensions.width * 3) / 8.3);
   const { auto_login } = useContext(AuthContext);
   useEffect(() => {
     setTimeout(async () => {

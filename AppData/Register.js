@@ -231,7 +231,7 @@ const Register = ({ navigation, item }) => {
               />
 
               <TouchableOpacity onPress={() => { handleSubmitButton(); }} style={{ justifyContent: "center", borderRadius: 30, backgroundColor: "#62788B", padding: 15, marginVertical: 15 }}>
-                <Text style={{ color: "white", textAlign: "center" }}>Registeration</Text>
+                <Text style={{ color: "white", textAlign: "center" }}>Register</Text>
               </TouchableOpacity>
 
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center', marginBottom: 10 }}>

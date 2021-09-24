@@ -78,7 +78,7 @@ export const ViewEvent = ({ navigation, item }) => {
                   <SmallTextGrid icon="title" title={item.title} />
                   <SmallTextGrid icon="location" title={item.venue} />
                   <SmallTextGrid icon="dresscode" title={item.event_dress} />
-                  <SmallTextGrid icon="time" title={item.start_time} />
+                  <SmallTextGrid icon="time" title={item.start_time + "  To  " + item.end_time} />
                 </TouchableOpacity>
               )}
             />

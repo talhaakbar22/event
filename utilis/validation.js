@@ -31,7 +31,7 @@ export const loginValidation = (username, password) => {
 }
 
 export const Signup_validation = (username, email, password, userConfirmPassword, phone, dob, cnic, country, nationality) => {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    let reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (username === "") {
         return {
             valid: false,
