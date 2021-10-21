@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { SafeAreaView, View, Dimensions, Image } from "react-native";
+import { SafeAreaView, View, Dimensions, Image, ImageBackground } from "react-native";
 import Background from "../Assets/Background";
 import { AuthContext } from "../config/AuthProvider";
 import ResponsiveImage from "react-native-responsive-image";
@@ -23,11 +23,11 @@ const Splash = ({ navigation }) => {
 
   return (
     <SafeAreaView style = {{flex:1}}>
-      <Background>
+      <ImageBackground source={require("../Assets/Splash.png")} style={{flex: 1}}>
         <View style={{ alignItems: 'center', justifyContent: 'center', flex:1 }}>
           <Image style = {{height: height, width: width, }} source={require("../Assets/NewLogo.png")}  />
         </View>
-      </Background>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

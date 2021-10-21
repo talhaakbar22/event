@@ -1,5 +1,15 @@
 import React, { useState, useContext } from "react";
-import { SafeAreaView, Text, View, Image, TouchableOpacity, ScrollView, ToastAndroid, Platform } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  ToastAndroid,
+  Platform,
+  ImageBackground,
+} from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import Background from "../Assets/Background";
 import * as CON from "../component/Constants";
@@ -11,6 +21,8 @@ import { Signup_validation } from "../utilis/validation";
 import { Signup_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
 import Toast from "react-native-simple-toast";
+import Entypo from "react-native-vector-icons/Entypo";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 var validator = require("email-validator");
 
 const Register = ({ navigation, item }) => {
@@ -134,117 +146,139 @@ const Register = ({ navigation, item }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, }}>
-      <Background>
+      <ImageBackground source={require("../Assets/bg.png")} style={{flex: 1}}>
         <Loader animating={loading} />
-        <View style={{ backgroundColor: "rgba(0,0,0,0.5)", flex: 1 }}>
-          <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 15 }}>
-            <Image source={require("../Assets/NewLogo.png")} style={{ height: 100, width: 160, }} />
+          <TouchableOpacity  onPress={()=>navigation.goBack()}>
+            <View style={{flexDirection: 'row',justifyContent:"center",alignItems:"center",paddingVertical: 20,margin:35}}>
+            <Entypo color={Colors.white}  size={25} name={"chevron-left"}/>
+            <Text style={{ flex: 5,fontSize:20,color:Colors.white}}>Register</Text>
+            </View>
+          </TouchableOpacity>
+        <View style={{backgroundColor:"#fff", borderTopLeftRadius: 20, borderTopRightRadius: 20,flex:1}}>
+          <View style={{paddingHorizontal:22,paddingTop:20}}>
+            <Text style={{ color: "#33a930", fontSize: 22,fontWeight:"bold" }}>Let's Get Started</Text>
+          <Text style={{ color: "#62788B", fontSize: 14, }}>Hello there, Register to continue!</Text>
           </View>
-
-          <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', marginVertical: 5 }}>
-            <Text style={{ color: "white", fontSize: 32 }}> Hello !</Text>
-            <Text style={{ color: "#62788B", fontSize: 32 }}> Register Here</Text>
-          </View>
-
           <ScrollView>
             <View style={{ marginHorizontal: 25 }}>
+              <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Name</Text>
               <FormInput
-                placeholder={"User Name"}
+                placeholder={"Enter Name"}
                 value={userName}
-                placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
+                placeholderTextColor="#33a930"
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(userName) => { setErrors(""), setUserName(userName) }}
                 error={errors === "Please enter your name" ? "Please enter your name" : null || errors === "Name must should contain 3 letters" ? "Name must should contain 3 letters" : null}
               />
-
+              <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Username or email</Text>
               <FormInput
                 placeholder={"Email"}
                 value={userEmail}
-                placeholderTextColor="white"
+                placeholderTextColor="#33a930"
                 autoCapitalize="none"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(userEmail) => { setErrors(""), setUserEmail(userEmail) }}
                 error={errors === "Please Enter Your Email" ? "Please Enter Your Email" : null || errors === "Email format is invalid" ? "Email format is invalid" : null}
               />
-
+              <View style={{flexDirection:"row",flex:1}}>
+              <View style={{flex:1,marginHorizontal:2}}>
+              <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Password</Text>
               <FormInput
-                placeholder={"Password"}
+                placeholder={"password"}
                 value={userPassword}
-                placeholderTextColor="white"
+                placeholderTextColor="#33a930"
                 secureTextEntry={true}
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(userPassword) => { setErrors(""), setUserPassword(userPassword) }}
                 error={errors === "Please Enter Your Password" ? "Please Enter Your Password" : null || errors === "Password must should contain 6 digits" ? "Password must should contain 6 digits" : null}
               />
-
-              <FormInput
-                placeholder={"Confirmed Password"}
+              </View>
+              <View style={{flex:1,marginHorizontal:2}}>
+                <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>ConfirmPassword</Text>
+                <FormInput
+                placeholder={"confirmPassword"}
                 value={userConfirmPassword}
-                placeholderTextColor="white"
+                placeholderTextColor="#33a930"
                 secureTextEntry={true}
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(userConfirmPassword) => { setErrors(""), setuserConfirmPassword(userConfirmPassword) }}
                 error={errors === "Please enter your confirm password" ? "Please enter your confirm password" : null || errors === "Password doesn't match" ? "Password doesn't match" : null}
               />
-              <FormInput
+              </View>
+              </View>
+              <View style={{flexDirection:"row",flex:1}}>
+                <View style={{flex:1,marginHorizontal:2}}>
+                  <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Phone</Text>
+                  <FormInput
                 placeholder={"Phone"}
                 value={phone}
                 keyboardType="number-pad"
                 maxLength={20}
-                placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
+                placeholderTextColor="#33a930"
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(phone) => { setErrors(""), setPhone(phone) }}
                 error={errors === "Please Enter Your Phone Number" ? "Please Enter Your Phone Number" : null || errors === "Phone Number must should contain 11 digits" ? "Phone Number must should contain 11 digits" : null}
               />
-
-              <Date_picker maxDate={moment().subtract(18, "years")} dob={dob} onDateChange={(dob) => { onDateChange(dob) }}
+                </View>
+                <View style={{flex:1,marginHorizontal:2}}>
+                  <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>CNIC</Text>
+                  <FormInput
+                    placeholder={"Cnic"}
+                    value={cnic}
+                    maxLength={25}
+                    placeholderTextColor="#33a930"
+                    keyboardType="number-pad"
+                    style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
+                    onChangeText={(cnic) => { setErrors(""), setCnic(cnic) }}
+                    error={errors === "Inavlid cnic number" ? "Inavlid cnic number" : null}
+                  />
+                </View>
+              </View>
+              <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>D.O.B</Text>
+              <Date_picker containerStyle={{paddingHorizontal:10,backgroundColor:"rgba(124,123,123,0.12)"}} maxDate={moment().subtract(18, "years")} dob={dob} onDateChange={(dob) => { onDateChange(dob) }}
                 error={errors === "Please fill your date of birth" ? "Please fill your date of birth" : null}
-              />
-              <FormInput
-                placeholder={"Cnic"}
-                value={cnic}
-                maxLength={25}
-                placeholderTextColor="white"
-                keyboardType="number-pad"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
-                onChangeText={(cnic) => { setErrors(""), setCnic(cnic) }}
-                error={errors === "Inavlid cnic number" ? "Inavlid cnic number" : null}
-              />
-              <FormInput
+                  />
+              <View style={{flexDirection:"row",flex:1}}>
+                <View style={{flex:1,marginHorizontal:2}}>
+                  <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Country</Text>
+                  <FormInput
                 placeholder={"Country"}
                 value={country}
                 maxLength={25}
-                placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292", height:42}}
+                placeholderTextColor="#33a930"
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(country) => { setErrors(""), setCountry(country) }}
                 error={errors === "Please enter your country" ? "Please enter your country" : null}
               />
-
-              <FormInput
+              </View>
+                <View style={{flex:1,marginHorizontal:2}}>
+                  <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Nationality</Text>
+                  <FormInput
                 placeholder={"Nationality"}
                 value={nationality}
                 maxLength={25}
-                placeholderTextColor="white"
-                style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:42 }}
+                placeholderTextColor="#33a930"
+                style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}
                 onChangeText={(nationality) => { setErrors(""), setNationality(nationality) }}
                 error={errors === "Please enter your nationality" ? "Please enter your nationality" : null}
               />
-
-              <TouchableOpacity onPress={() => { handleSubmitButton(); }} style={{ justifyContent: "center", borderRadius: 30, backgroundColor: "#62788B", padding: 15, marginVertical: 15 }}>
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => { handleSubmitButton(); }} style={{ alignItems: "center", borderRadius: 10, backgroundColor: "#FFA26B", marginVertical: 5, padding: 10, marginTop: 30 }}>
                 <Text style={{ color: "white", textAlign: "center" }}>Register</Text>
               </TouchableOpacity>
 
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center', marginBottom: 10 }}>
-                <Text style={{ color: "#fff", fontSize: 13, }}>I ' m already memeber,</Text>
+                <Text style={{ color: "#62788B", fontSize: 13, }}>I ' m already memeber,</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                  <Text style={{ color: "#62788B", fontSize: 13, }}> login</Text>
+                  <Text style={{ color: "#FFA26B", fontSize: 13, }}> login</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
           </ScrollView>
         </View>
-      </Background>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

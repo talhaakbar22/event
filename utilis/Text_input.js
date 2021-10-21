@@ -53,14 +53,15 @@ class Date_picker extends Component {
         error: PropTypes.any,
         dob: PropTypes.any,
         maxDate: PropTypes.any,
-        onDateChange: PropTypes.func
+        onDateChange: PropTypes.func,
+        containerStyle:PropTypes.any
     }
 
     render() {
         return (
-            <View style={[this.props.containerStyle]} >
+            <View style={[this.props.containerStyle,{borderRadius:20,height:45,justifyContent:"center"}]} >
               <DatePicker
-                 style={{ marginTop: 15, width: '100%' }}
+                 style={{width: '100%',color:"#33a930",fontWeight:"bold" }}
                 date={this.props.dob}
                 value={this.props.dob}
                 mode="date"
@@ -68,11 +69,11 @@ class Date_picker extends Component {
                 format="YYYY-MM-DD"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
-                maxDate = {this.props.maxDate}
+                 maxDate = {this.props.maxDate}
                 showIcon={false}
                 customStyles={{
-                  dateText: { fontSize: 14, color: "#fff", textAlign: "left", },
-                  dateInput: {  alignItems: "flex-start", borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, }
+                  dateText: { fontSize: 14, color: "#33a930", textAlign: "left", },
+                  dateInput: {  alignItems: "flex-start", borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0,color: "#33a930",borderBottomWidth:0 }
                 }}
                 onDateChange={this.props.onDateChange}
               />

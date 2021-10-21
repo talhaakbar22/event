@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView, View, Text, Image, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import Background from "../Assets/Background";
 import LinearGradient from "react-native-linear-gradient";
 import { AuthContext } from "../config/AuthProvider";
 import { get_data } from "../utilis/AsyncStorage/Controller";
+import Entypo from "react-native-vector-icons/Entypo";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Color from "../utilis/Color";
 
 const ViewProfile = ({ navigation }) => {
   const { user, logout, login } = useContext(AuthContext);
@@ -15,67 +18,82 @@ const ViewProfile = ({ navigation }) => {
 
   useEffect(async () => {
     let data = await get_data("USER_ID")
+    console.log(data);
     if (data !== null) {
       setUser(data.user)
     }
-  })
+  },[])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Background>
-        <View style={{ backgroundColor: "#191919", paddingVertical: 10 }}>
-          <LinearGradient colors={["#231F20", "#312A2C"]}>
-            <Image source={require("../Assets/NewLogo.png")} style={{ height: 62, width: 100, alignSelf: 'center', marginVertical: 5 }} />
-          </LinearGradient>
-        </View>
-
-        <ScrollView>
-          <View style={{ borderWidth: 1, borderColor: "#5d5d5d", borderRadius: 25, backgroundColor: "rgba(0,0,0,0.4)", paddingVertical: 15, margin: 5, marginHorizontal: 15 }}>
-            <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-              <Text style={{ margin: 15, color: "#fff" }}>{users.name}</Text>
+      <ImageBackground source={require("../Assets/bg.png")} style={{flex: 1}}>
+          <TouchableOpacity  onPress={()=>navigation.goBack()}>
+            <View style={{flexDirection: 'row',justifyContent:"center",alignItems:"center",paddingVertical: 20,margin:35}}>
+            <Entypo color={Colors.white}  size={25} name={"chevron-left"}/>
+            <Text style={{ flex: 5,fontSize:20,color:Colors.white}}>Profile</Text>
             </View>
-
-            <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-              <Text style={{ margin: 15, color: "#fff" }}>{users.email}</Text>
+          </TouchableOpacity>
+        <View style={{backgroundColor:"#fff", borderTopLeftRadius: 20, borderTopRightRadius: 20,flex:1,padding:20}}>
+        <ScrollView>
+          <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Username</Text>
+          <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+              <Text style={{ margin: 15, color:Color.primary,fontWeight:"bold" }}>{users.name}</Text>
+            </View>
+          <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Email</Text>
+          <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+              <Text style={{ margin: 15, color:Color.primary,fontWeight:"bold" }}>{users.email}</Text>
             </View>
             {user.role !== "admin" ?
               <View>
-                <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-                  <Text style={{ margin: 15, color: "#fff" }}> {users.phone} </Text>
+                <View style={{flex:1,flexDirection:"row",justifyContent:"space-between",}}>
+                <View style={{flex:1,marginHorizontal:2}}>
+                <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Phone #</Text>
+                <View  style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+                  <Text style={{ margin: 15, color:Color.primary,fontWeight:"bold" }}> {users.phone} </Text>
                 </View>
-
-                <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-                  <Text style={{ margin: 15, color: "#fff" }}> {users.dob} </Text>
+                </View >
+                <View style={{flex:1,marginHorizontal:2}}>
+                  <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>CNIC</Text>
+                  <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+                  <Text style={{ margin: 15, color:Color.primary,fontWeight:"bold" }}> {users.cnic} </Text>
                 </View>
-
-                <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-                  <Text style={{ margin: 15, color: "#fff" }}> {users.cnic} </Text>
                 </View>
-
-                <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-                  <Text style={{ margin: 15, color: "#fff" }}> {users.country} </Text>
                 </View>
-
-                <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
-                  <Text style={{ margin: 15, color: "#fff" }}> {users.nationality} </Text>
+                <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>CNIC</Text>
+                <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+                  <Text style={{ margin: 15, color:Color.primary,fontWeight:"bold" }}> {users.dob} </Text>
                 </View>
+                <View style={{flex:1,flexDirection:"row",justifyContent:"space-between",}}>
+                  <View style={{flex:1,marginHorizontal:2}}>
+                    <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Country</Text>
+                <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+                  <Text style={{ margin: 10, color:Color.primary,fontWeight:"bold" }}> {users.country} </Text>
+                </View>
+                  </View >
+                  <View style={{flex:1,marginHorizontal:2}}>
+                    <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold",marginVertical:10}}>Nationality</Text>
+                <View style={{color:Color.primary,height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,}}>
+                  <Text style={{margin:10,color:Color.primary,fontWeight:"bold" }}>{users.nationality} </Text>
+                </View>
+                  </View>
+              </View>
               </View>
               : null
             }
 
-            <TouchableOpacity onPress={() => { logout(navigation); }} style={{ borderRadius: 30, backgroundColor: "#62788B", margin: 5 }}>
-              <Text style={{ color: "#fff", margin: 15, textAlign: "center", }}>Logout</Text>
+            <TouchableOpacity onPress={() => { logout(navigation); }} style={{ alignItems: "center", borderRadius: 10, backgroundColor:Color.secondary, marginVertical: 5, padding: 10,marginTop:15}}>
+              <Text style={{ color: "#fff", textAlign: "center", }}>Logout</Text>
             </TouchableOpacity>
 
             {user.role !== "admin" ?
-              <TouchableOpacity onPress={() => { navigation.navigate("UpdateProfile"); }} style={{ borderRadius: 30, backgroundColor: "#62788B", margin: 5 }}>
-                <Text style={{ color: "#fff", margin: 15, textAlign: "center", }}>Update Profile</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate("UpdateProfile"); }} style={{ alignItems: "center", borderRadius: 10, backgroundColor:Color.primary, marginVertical: 5, padding: 10,}}>
+                <Text style={{ color: "#fff", textAlign: "center", }}>Update Profile</Text>
               </TouchableOpacity>
               : null
             }
-          </View>
         </ScrollView>
-      </Background>
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

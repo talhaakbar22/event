@@ -1,5 +1,15 @@
 import React, { useState, useContext } from "react";
-import { SafeAreaView, Text, View, Image, ToastAndroid, TouchableOpacity, ScrollView, Platform } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+  ToastAndroid,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+  ImageBackground,
+} from "react-native";
 import Background from "../Assets/Background";
 import { AuthContext } from "../config/AuthProvider";
 import { FormInput } from "../utilis/Text_input";
@@ -7,6 +17,8 @@ import { loginValidation } from "../utilis/validation";
 import { Login_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
 import Toast from "react-native-simple-toast";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Entypo from "react-native-vector-icons/Entypo";
 
 const Login = ({ navigation }) => {
 
@@ -74,49 +86,53 @@ const Login = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Background>
+      <ImageBackground source={require("../Assets/bg.png")} style={{flex: 1}}>
         <Loader animating={isLoading} />
+        <View style={{flexDirection: 'row',justifyContent:"center",alignItems:"center",paddingVertical: 20,margin:35}}>
+          <Text style={{ flex: 5,fontSize:20,color:Colors.white}}>Login</Text>
+        </View>
+        <View style={{backgroundColor:"#fff", borderTopLeftRadius: 20, borderTopRightRadius: 20,flex:1}}>
         <View style={{ flex: 1, justifyContent: 'center', marginHorizontal: 25 }}>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require("../Assets/NewLogo.png")} style={{ height: 135, width: 210, }} />
-          </View>
-          <View style={{ flex: 1.5 }}>
-            <View style={{ flexDirection: "row", alignSelf: "center", }}>
-              <Text style={{ color: "#fff", fontSize: 32, }}>Hello !</Text>
-              <Text style={{ color: "#62788B", fontSize: 32, }}> Login Here</Text>
-            </View>
-
+          <View style={{ flex: 1.5,marginTop:20 }}>
+              <Text style={{ color: "#33a930", fontSize: 22,fontWeight:"bold" }}>Let</Text>
+              <Text style={{ color: "#62788B", fontSize: 14, }}>Hello there, sign in to continue!</Text>
             <ScrollView>
               <View style={{ marginTop: 40 }}>
+                <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold" }}>Username or email</Text>
                 <FormInput
-                  placeholder={"Email"}
+                  placeholder={"Enter email"}
                   value={userEmail}
-                  placeholderTextColor="white"
+                  placeholderTextColor="#33a930"
                   keyboardType="email-address"
-                  style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:45 }}
+                  style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,marginTop:10,marginBottom:16}}
                   onChangeText={(userEmail) => { setErrors(""), setUserEmail(userEmail) }}
                   error={errors === "Please Enter Your Email" ? "Please Enter Your Email" : null || errors === "Email format is invalid" ? "Email format is invalid" : null}
                 />
+                <Text style={{ color: "#989da1", fontSize: 14,fontWeight:"bold" }}>Username or email</Text>
                 <FormInput
                   placeholder={"Password"}
                   value={userPassword}
-                  placeholderTextColor="white"
+                  placeholderTextColor="#33a930"
                   secureTextEntry={true}
-                  style={{ borderBottomWidth: 1, color: "#fff", borderColor: "#989292",height:45 }}
+                  style={{color: "#33a930",height:45,fontWeight:"bold",backgroundColor:"rgba(124,123,123,0.12)",paddingLeft:15,borderRadius:20,marginTop:10,marginBottom:16}}
                   onChangeText={(userPassword) => { setErrors(""), setUserPassword(userPassword) }}
                   error={errors === "Please Enter Your Password" ? "Please Enter Your Password" : null || errors === "Password must should contain 6 digits" ? "Password must should contain 6 digits" : null}
                 />
-                <TouchableOpacity onPress={() => { handleSubmitPress() }} style={{ alignItems: "center", borderRadius: 30, backgroundColor: "#62788B", marginVertical: 5, padding: 10, marginTop: 30 }}>
+                <TouchableOpacity onPress={() => { handleSubmitPress() }} style={{ alignItems: "center", borderRadius: 10, backgroundColor: "#FFA26B", marginVertical: 5, padding: 10, marginTop: 30 }}>
                   <Text style={{ color: "white" }}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("Register")} style={{ alignItems: "center", borderRadius: 30, backgroundColor: "#62788B", marginVertical: 5, padding: 10 }}>
-                  <Text style={{ color: "white" }}>Register</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
           </View>
         </View>
-      </Background>
+          <View style={{flexDirection:"row",justifyContent:"center",bottom:10}}>
+            <Text>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <Text style={{ color: "#FFA26B",fontWeight:"bold" }}> Register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

@@ -10,7 +10,7 @@ export default class Loader extends React.Component {
     render() {
         return (
             <Modal visible = {this.props.animating} transparent = {true}>
-                <ActivityIndicator style = {{flex:1}} size = "large" color = "white" animating={this.props.animating} />
+                <ActivityIndicator style = {{flex:1}} size = "large" color ={"#000"} animating={this.props.animating} />
             </Modal>
         )
     }

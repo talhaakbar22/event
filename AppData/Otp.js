@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Text, View, SafeAreaView, TouchableOpacity, ToastAndroid, Platform } from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity, ToastAndroid, Platform, ImageBackground } from "react-native";
 import Background from "../Assets/Background";
 import OtpInputs from "react-native-otp-inputs";
 import { AuthContext } from "../config/AuthProvider";
@@ -55,8 +55,8 @@ const Otp = ({ route, navigation }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Background>
-        <Loader animating={isLoading} />
+      <ImageBackground source={require("../Assets/bg.png")} style={{flex: 1}}>
+      <Loader animating={isLoading} />
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Text style={{ textAlign: "center", fontSize: 20, color: "#fff" }}>Enter Your OTP Code</Text>
           <OtpInputs
@@ -73,7 +73,7 @@ const Otp = ({ route, navigation }) => {
             </TouchableOpacity>
             : null}
         </View>
-      </Background>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

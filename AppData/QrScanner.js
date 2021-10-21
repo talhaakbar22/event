@@ -10,7 +10,7 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  Platform,
+  Platform, ImageBackground,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Background from "../Assets/Background";
@@ -93,16 +93,10 @@ const QRScanner = ({ }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Background>
-        <Loader animating={isLoading} />
+      <ImageBackground source={require("../Assets/bg.png")} style={{flex: 1}}>
+      <Loader animating={isLoading} />
         {userid ?
           <View>
-            <View style={{ backgroundColor: "#191919", paddingVertical: 10 }}>
-              <LinearGradient colors={["#231F20", "#312A2C"]}>
-                <Image source={require("../Assets/NewLogo.png")} style={{ height: 62, width: 100, alignSelf: 'center', marginVertical: 5 }} />
-              </LinearGradient>
-            </View>
-
             <ScrollView>
               <View style={{ flex: 1, borderWidth: 1, borderColor: "#5d5d5d", borderRadius: 25, backgroundColor: "rgba(0,0,0,0.4)", margin: 5, padding: 10 }}>
                 <View style={{ borderRadius: 30, borderColor: "#62788B", borderWidth: 1, margin: 5 }}>
@@ -156,7 +150,7 @@ const QRScanner = ({ }) => {
             markerStyle={{ borderColor: "#890021", borderRadius: 10 }}
           />
         }
-      </Background>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

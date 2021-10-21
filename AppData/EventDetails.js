@@ -1,12 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, View, SafeAreaView, TouchableOpacity, Image, RefreshControl, useWindowDimensions, ScrollView, ToastAndroid,Platform } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import Background from "../Assets/Background";
-import SmallTextGrid from "./SmallTextGrid";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  RefreshControl,
+  useWindowDimensions,
+  ScrollView,
+  ToastAndroid,
+  Platform,
+  StatusBar, ImageBackground,
+} from "react-native";
 import { AuthContext } from "../config/AuthProvider";
 import { Event_visitor_api, Event_visitor_response_api } from "../utilis/Api/Api_controller";
 import Loader from "../utilis/Loader";
 import Toast from "react-native-simple-toast";
+import Color from "../utilis/Color";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Entypo from "react-native-vector-icons/Entypo";
 
 
 const wait = (timeout) => {
@@ -63,6 +75,7 @@ const eventdetail = ({ navigation, route }) => {
           if (response.data.message == false) {
             let response = await Event_visitor_response_api({ user_id: user.id, event_id: item.id, visiting_status: "pending", })
             if (response.data.message == true) {
+              setRefreshing(!refreshing)
               if (Platform.OS === 'android') {
                 ToastAndroid.showWithGravityAndOffset("Request Sent!", ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
                 setLoading(false);
@@ -119,58 +132,72 @@ const eventdetail = ({ navigation, route }) => {
   }, []);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Background>
         <Loader animating={isLoading} />
         <View style={{ flex: 2 }}>
-          <View style={{ backgroundColor: "#191919", paddingVertical: 10 }}>
-            <LinearGradient colors={["#231F20", "#312A2C"]} >
-              <View style={{ padding: 10, flexDirection: "row" }}>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  <Image source={require("../Assets/NewLogo.png")} style={{ height: 62, width: 100 }} />
-                </View>
-                {user.role !== "admin" ?
+          <ImageBackground source={{ uri: item.image }} style={{height:150,width:"100%",}} imageStyle={{ borderBottomLeftRadius:50,borderBottomRightRadius:50}}>
+            <View style={{flexDirection: 'row', flex:1,justifyContent:"space-between",}}>
+                <TouchableOpacity  onPress={()=>navigation.goBack()}>
+                  <View style={{flexDirection:"row",flex:1,padding:20}}>
+                  <Entypo color={Color.white}  size={25} name={"chevron-left"}/>
+                  <Text style={{fontSize:20,color:Color.white}}>Home</Text>
+                  </View>
+                </TouchableOpacity>
+              <View style={{flex:1}}>
+            {user.role !== "admin" ?
                   event == "accepted" ?
-                    <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" }} onPress={() => { userValidation() }}>
-                      <Text style={{ color: "#fff", fontSize: 20 }}>JOIN</Text>
+                    <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" ,padding:20}} onPress={() => { userValidation() }}>
+                      <Text style={{ color:Color.secondary, fontSize: 20 }}>JOIN</Text>
                     </TouchableOpacity>
                     : null
                   : null
                 }
               </View>
-            </LinearGradient>
-          </View>
-          <ScrollView style={{flex:1, backgroundColor: "rgba(0,0,0,0.4)", borderWidth: 1, borderColor: "#5d5d5d", margin: 10, padding: 10, borderRadius: 5, }}
+            </View>
+          </ImageBackground>
+          <ScrollView
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
-            <View style={{flex:1}}>
-            <Image source={{ uri: item.image }} style={{ height: 200 }} />
-            <View style={{ backgroundColor: "#191919" }}>
-              <Text style={{ fontSize: 24, textAlign: 'center', color: "#FEFEFE", marginTop: 10 }}>{item.title}</Text>
-              <SmallTextGrid icon="title" title={item.speaker_name} />
-              <SmallTextGrid icon="theme" title={item.event_theme} />
-              <SmallTextGrid icon="location" title={item.venue} />
-              <SmallTextGrid icon="time" title={item.start_time + "  To  " + item.end_time} />
-              {user.role == "user" ?
-                event !== "" && event !== undefined ? <Text style={{ color: "#fff", backgroundColor: event == "accepted" ? "green" : "orange", textAlign: "center", padding: 5, margin: 10, borderRadius: 5, alignSelf: 'flex-end' }}>{event}</Text>
-                  : null
-                : null}
+            <RefreshControl
+              refreshing={false}
+              onRefresh={onRefresh} />
+          }>
+          <View style={{margin:30}}>
+            <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+            <Text style={{ color:Color.primary, fontSize: 25,fontWeight:"bold" }}>{item.title}</Text>
+            {user.role == "user" ?
+              event !== "" && event !== undefined ?
+                <Text style={{ color: "#fff", backgroundColor: event == "accepted" ? "green" : "orange", textAlign: "center", padding: 5, margin: 10, borderRadius: 5, alignSelf: 'flex-end' }}>{event}</Text>
+                : null
+              : null}
             </View>
-            <Text style={{ color: "#fff",  margin: 15, marginVertical: 20}}>{item.description}</Text>
+          <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center",paddingVertical:5}}>
+            <MaterialIcons color={Color.white}  size={25} name={"date-range"} style={{padding:10,height:45,width:45,backgroundColor:Color.primary,borderRadius:10,justifyContent:"center",alignItems:"center"}}/>
+            <Text style={{paddingHorizontal:10,color:Color.lightgray,fontSize:16}}>{item.start_time}</Text>
+          </View>
+            <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center",paddingVertical:5}}>
+              <Entypo color={Color.white}  size={25} name={"location-pin"} style={{padding:10,height:45,width:45,backgroundColor:Color.secondary,borderRadius:10,justifyContent:"center",alignItems:"center"}}/>
+              <Text style={{paddingHorizontal:10,color:Color.lightgray,fontSize:16}}>{item.venue}</Text>
             </View>
+            <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center",paddingVertical:5}}>
+              <Text style={{ color:Color.primary, fontSize: 14,paddingVertical:5,fontWeight:"bold"}}>Theme: </Text>
+              <Text style={{paddingHorizontal:10,color:Color.lightgray,fontSize:14}}>{item.event_theme}</Text>
+            </View>
+            <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+            <Text style={{ color:Color.primary, fontSize: 20,paddingVertical:5,fontWeight:"bold"}}>Speaker: </Text>
+            <Text style={{ color:Color.primary, fontSize: 18,paddingVertical:5}}> {item.speaker_name}</Text>
+          </View>
+            <Text style={{color:Color.lightgray,fontWeight:"bold",paddingVertical:5}}>About Event:</Text>
+            <Text style={{color:Color.lightgray,paddingVertical:5}}>{item.description}</Text>
+          </View>
           </ScrollView>
         </View>
-        <View style={{ backgroundColor: "#fff5", borderTopLeftRadius: 38, borderTopRightRadius: 38, flex: 0.15 }} >
           {user.role !== "admin" ?
             event !== "joined" ?
-              <TouchableOpacity style={{ bottom: 45,width:80,alignSelf:"center" }} onPress={() => { event == "pending" ? ToastAndroid.show("Your request is Pending!", ToastAndroid.LONG) : userValidation() }}>
+              <TouchableOpacity style={{ alignSelf:"center" }} onPress={() => { event == "pending" ? ToastAndroid.show("Your request is Pending!", ToastAndroid.LONG) : userValidation() }}>
                 <Image style={{ height: 90, width: 90, alignSelf: "center", }} source={require("../Assets/Qr.png")} />
               </TouchableOpacity>
               : null
             : null
           }
-        </View>
-      </Background>
     </SafeAreaView>
   );
 };
